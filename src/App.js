@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const initialFriends = [
 	{
@@ -186,6 +186,10 @@ function FormSplitBill({ selectedFriend, onSplitBill }) {
 
 		onSplitBill(whoIsPaying === 'user' ? paidByFriend : -paidByUser)
 	}
+
+	useEffect(() => {
+		setPaidByUser(0)
+	}, [bill])
 
 	return (
 		<form className="form-split-bill" onSubmit={handleSubmit}>
