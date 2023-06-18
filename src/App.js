@@ -35,7 +35,7 @@ export default function App() {
 	const [selectedFriend, setSelectedFriend] = useState(null)
 
 	function handleSplitBill(value) {
-		console.log(value)
+		// console.log(value)
 
 		setFriends(friends =>
 			friends.map(friend =>
@@ -84,6 +84,7 @@ export default function App() {
 				<FormSplitBill
 					selectedFriend={selectedFriend}
 					onSplitBill={handleSplitBill}
+					key={selectedFriend.id}
 				/>
 			)}
 		</div>
@@ -188,7 +189,7 @@ function FormSplitBill({ selectedFriend, onSplitBill }) {
 	}
 
 	useEffect(() => {
-		setPaidByUser(0)
+		setPaidByUser('')
 	}, [bill])
 
 	return (
