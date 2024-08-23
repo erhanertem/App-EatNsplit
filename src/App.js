@@ -1,65 +1,60 @@
 import { useState } from 'react';
+
 import Button from './components/Button';
-import FormAddFriend from './components/FormAddFriend';
 import FormSplitBill from './components/FormSplitBill';
+import FormAddFriend from './components/FormAddFriend';
 import FriendsList from './components/FriendsList';
 
-const initialFriendsList = [
-	{
-		id: 118836,
-		name: 'Clark',
-		image: 'https://i.pravatar.cc/48?u=118836',
-		balance: -7,
-	},
-	{
-		id: 933372,
-		name: 'Sarah',
-		image: 'https://i.pravatar.cc/48?u=933372',
-		balance: 20,
-	},
-	{
-		id: 499476,
-		name: 'Anthony',
-		image: 'https://i.pravatar.cc/48?u=499476',
-		balance: 0,
-	},
-];
-
 export default function App() {
-	const [friendsList, setFriendsList] = useState(initialFriendsList);
-	function handleShowAddFriendModal() {
-		setShowAddFriendModal((value) => !value);
-	}
-
-	const [showAddFriendModal, setShowAddFriendModal] = useState(false);
-	function handleAddFriendList(friend) {
-		if (friendsList.map((friend) => friend.name).includes(friend.name)) {
-			window.alert('Please input another user name. Its already reserved');
-		} else {
-			//Update the friend list
-			setFriendsList((currentFriends) => [...currentFriends, friend]);
-			//Hide the modal
-			setShowAddFriendModal(false);
-		}
-	}
-
+	const [friendsList, setFriendsList] = useState([
+		{
+			id: 118836,
+			name: 'Clark',
+			image: 'https://i.pravatar.cc/48?u=118836',
+			balance: -7,
+		},
+		{
+			id: 933372,
+			name: 'Sarah',
+			image: 'https://i.pravatar.cc/48?u=933372',
+			balance: 20,
+		},
+		{
+			id: 499476,
+			name: 'Anthony',
+			image: 'https://i.pravatar.cc/48?u=499476',
+			balance: 0,
+		},
+	]);
+	const [showAddFriend, setShowAddFriend] = useState(false);
 	const [selectedFriend, setSelectedFriend] = useState(null);
-	function handleSelectFriend(friend) {
-		// Selection with no de-select toggle
-		// setSelectedFriend(friend);
-		// Selection with toggle logic
-		setSelectedFriend((currentSelected) => (currentSelected?.id === friend.id ? null : friend));
-	}
 
+	function showAddFriendHandler() {
+		setShowAddFriend((showAddFriend) => !showAddFriend);
+		setSelectedFriend(null);
+	}
+	function addFriendHandler(newFriend) {
+		setFriendsList((friendsList) => [...friendsList, newFriend]);
+		// Hide the form after submission
+		setShowAddFriend(false);
+	}
+	function handleFriendSelectionToggle(friend) {
+		setSelectedFriend((cur) => (cur?.id === friend.id ? null : friend));
+		setShowAddFriend(false);
+	}
 	function handleSplitBill(value) {
-		// console.log(value);
-		setFriendsList((friends) =>
-			friends.map((friend) =>
-				friend.id === selectedFriend.id ? { ...friend, balance: friend.balance + value } : friend,
-			),
+		setFriendsList((friendsList) =>
+			friendsList.map((friend) =>
+				friend.id === selectedFriend.id
+					? {
+							...friend,
+							balance: friend.balance + value,
+					  }
+					: friend
+			)
 		);
 
-		//CLOSE THE SPLIT PAY MODAL BY RESETTING THE SELECTED USER VALUE
+		// Close the split bill pane after submission
 		setSelectedFriend(null);
 	}
 
@@ -69,21 +64,17 @@ export default function App() {
 				<FriendsList
 					friends={friendsList}
 					selectedFriend={selectedFriend}
-					onSelectFriend={handleSelectFriend}
+					onFriendSelect={handleFriendSelectionToggle}
 				/>
-
-				{showAddFriendModal && <FormAddFriend onAddFriend={handleAddFriendList} />}
-
-				<Button onClick={handleShowAddFriendModal}>
-					{!showAddFriendModal ? 'Add Friend' : 'Close'}
+				{showAddFriend && <FormAddFriend onAddFriend={addFriendHandler} />}
+				<Button onClick={showAddFriendHandler}>
+					{!showAddFriend ? 'Add friend' : 'Close'}
 				</Button>
 			</div>
-
 			{selectedFriend && (
 				<FormSplitBill
-					selectedFriend={selectedFriend}
+					friend={selectedFriend}
 					onSplitBill={handleSplitBill}
-					key={selectedFriend.id}
 				/>
 			)}
 		</div>
