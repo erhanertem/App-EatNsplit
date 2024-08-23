@@ -4,7 +4,7 @@
 
 ## Udemy The Ultimate React Course 2024: React, Redux & More by Jonas Schmedtmann
 
-### **Objective:** Cretae a Eat-n-Split App
+### **Objective:** Create a Eat-n-Split App
 
 -  Explore React state management, uplifting, state types
 -  Explore propping
