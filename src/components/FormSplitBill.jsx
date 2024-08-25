@@ -39,12 +39,12 @@ export default function FormSplitBill({ friend, onSplitBill }) {
 					const currBillValue = e.target.value;
 
 					// If bill value field is lower than your expense field, allow the new input but reset the your expense field
-					if (paidByUser && currBillValue <= paidByUser) {
+					if (paidByUser && +currBillValue <= paidByUser) {
 						setBill(+currBillValue);
 						setPaidByUser('');
 					}
 					// If bill value field is greater than your expense field, allow the new input
-					if (currBillValue > paidByUser) {
+					if (+currBillValue > paidByUser) {
 						setBill(+currBillValue);
 					}
 					// If deleted the bill amount, reset your expense and bill value fields
